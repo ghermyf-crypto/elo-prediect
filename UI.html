@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>White Player Elo Predictor</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+.background {
+position: relative;
+}
+.background::before {
+content: "";
+position: fixed;
+top: -10px;
+left: -10px;
+right: -10px;
+bottom: -10px;
+background-image: linear-gradient(rgba(128, 128, 128, 0.5), rgba(128, 128, 128, 0.5)), url("https://media.gettyimages.com/id/1428445836/photo/close-up-of-a-chessboard-focus-on-the-king-and-queen.jpg?s=2048x2048&w=gi&k=20&c=DU0Mbo42dRf_0Jyg_GLYLba6cEKKofd_L5RN-dJzKHY=");
+background-size: cover;
+background-position: center;
+filter: blur(5px);
+z-index: -1;
+}
+.black_box{
+width: 1000px;
+height: 10009px;
+border-radius: 25px;
+background-color: rgb(0, 0, 0);
+background-image: linear-gradient(to top, black , white);
+background-size: 100% 500px;
+background-repeat: no-repeat;
+
+color: white;
+padding: 10% 10%;
+margin: 1px auto;
+}
+</style>
+</head>
+<body>
+
+<div class="background">
+<header>
+<h1 style="text-align: center; font-family: 'Oswald', sans-serif; font-weight: bold; color: #000000; margin-top: 50px; font-size:100px">
+White Player Elo Predictor
+</h1>
+</header>
+
+<div class="black_box">
+<h1 style="text-align: center; font-family: 'Ubuntu', sans-serif; font-weight: bold; color: whitesmoke; font-size: 100px">
+White Elo Prediction
+</h1>
+</div>
+</div>
+
+<script>
+const navBar = document.createElement('header');
+
+Object.assign(navBar.style, {
+  position: 'fixed',
+  top: '0',
+  left: '0',
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '12px 40px',
+  backgroundColor: 'rgba(15, 15, 15, 0.85)',
+  backdropFilter: 'blur(12px)',
+  webkitBackdropFilter: 'blur(12px)',
+  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
+  zIndex: '9999',
+  boxSizing: 'border-box'
+});
+
+const logo = document.createElement('a');
+logo.innerText = '♟ EloPredict';
+logo.href = 'index.html';
+
+Object.assign(logo.style, {
+  color: '#ffffff',
+  textDecoration: 'none',
+  fontFamily: "'Oswald', sans-serif",
+  fontSize: '22px',
+  fontWeight: 'bold',
+  letterSpacing: '1px'
+});
+
+const navGroup = document.createElement('div');
+Object.assign(navGroup.style, {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '20px'
+});
+
+const homeBtn = document.createElement('a');
+homeBtn.innerText = 'Home';
+homeBtn.href = 'index.html';
+
+Object.assign(homeBtn.style, {
+  color: 'rgba(255, 255, 255, 0.8)',
+  textDecoration: 'none',
+  fontFamily: "'Ubuntu', sans-serif",
+  fontSize: '15px',
+  fontWeight: '700',
+  padding: '8px 12px',
+  transition: 'color 0.2s ease'
+});
+
+homeBtn.addEventListener('mouseenter', () => homeBtn.style.color = '#ffffff');
+homeBtn.addEventListener('mouseleave', () => homeBtn.style.color = 'rgba(255, 255, 255, 0.8)');
+
+const dropdownContainer = document.createElement('div');
+Object.assign(dropdownContainer.style, {
+  position: 'relative',
+  display: 'inline-block'
+});
+
+const dropdownTrigger = document.createElement('button');
+dropdownTrigger.innerText = 'Other Pages ▾';
+
+Object.assign(dropdownTrigger.style, {
+  color: '#ffffff',
+  backgroundColor: '#2563eb',
+  border: 'none',
+  fontFamily: "'Ubuntu', sans-serif",
+  fontSize: '14px',
+  fontWeight: '700',
+  padding: '8px 18px',
+  borderRadius: '20px',
+  boxShadow: '0 2px 10px rgba(37, 99, 235, 0.3)',
+  cursor: 'pointer',
+  transition: 'all 0.2s ease'
+});
+
+const dropdownMenu = document.createElement('div');
+
+Object.assign(dropdownMenu.style, {
+  display: 'none',
+  position: 'absolute',
+  right: '0',
+  top: '100%',
+  marginTop: '8px',
+  backgroundColor: 'rgba(25, 25, 25, 0.95)',
+  backdropFilter: 'blur(10px)',
+  minWidth: '220px',
+  boxShadow: '0 8px 16px rgba(0,0,0,0.5)',
+  borderRadius: '12px',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  overflow: 'hidden',
+  zIndex: '10000'
+});
+
+const blackPlayerLink = document.createElement('a');
+blackPlayerLink.innerText = 'Black Player Elo Prediction';
+blackPlayerLink.href = 'page2.html';
+
+const whitePlayerLink = document.createElement('a');
+whitePlayerLink.innerText = 'White Player Elo Prediction';
+whitePlayerLink.href = 'UI.html';
+
+const itemStyle = {
+  color: '#ffffff',
+  padding: '12px 16px',
+  textDecoration: 'none',
+  display: 'block',
+  fontFamily: "'Ubuntu', sans-serif",
+  fontSize: '13px',
+  fontWeight: 'bold',
+  transition: 'background-color 0.2s ease'
+};
+
+Object.assign(blackPlayerLink.style, itemStyle);
+Object.assign(whitePlayerLink.style, itemStyle);
+
+blackPlayerLink.addEventListener('mouseenter', () => blackPlayerLink.style.backgroundColor = 'rgba(255, 255, 255, 0.1)');
+blackPlayerLink.addEventListener('mouseleave', () => blackPlayerLink.style.backgroundColor = 'transparent');
+
+whitePlayerLink.addEventListener('mouseenter', () => whitePlayerLink.style.backgroundColor = 'rgba(255, 255, 255, 0.1)');
+whitePlayerLink.addEventListener('mouseleave', () => whitePlayerLink.style.backgroundColor = 'transparent');
+
+dropdownMenu.appendChild(blackPlayerLink);
+dropdownMenu.appendChild(whitePlayerLink);
+
+dropdownContainer.appendChild(dropdownTrigger);
+dropdownContainer.appendChild(dropdownMenu);
+
+dropdownTrigger.addEventListener('click', (event) => {
+  event.stopPropagation();
+  const isOpen = dropdownMenu.style.display === 'block';
+  dropdownMenu.style.display = isOpen ? 'none' : 'block';
+  dropdownTrigger.style.backgroundColor = isOpen ? '#2563eb' : '#1d4ed8';
+});
+
+document.addEventListener('click', (event) => {
+  if (!dropdownContainer.contains(event.target)) {
+    dropdownMenu.style.display = 'none';
+    dropdownTrigger.style.backgroundColor = '#2563eb';
+  }
+});
+
+navGroup.appendChild(homeBtn);
+navGroup.appendChild(dropdownContainer);
+
+navBar.appendChild(logo);
+navBar.appendChild(navGroup);
+
+document.body.insertBefore(navBar, document.body.firstChild);
+document.body.style.paddingTop = '60px';
+</script>
+
+</body>
+</html>

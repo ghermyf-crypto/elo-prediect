@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Black Player Elo Predictor</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+.background {
+  position: relative;
+}
+.background::before {
+  content: "";
+  position: fixed;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background-image: linear-gradient(rgba(128, 128, 128, 0.5), rgba(128, 128, 128, 0.5)), url("https://media.gettyimages.com/id/1428445836/photo/close-up-of-a-chessboard-focus-on-the-king-and-queen.jpg?s=2048x2048&w=gi&k=20&c=DU0Mbo42dRf_0Jyg_GLYLba6cEKKofd_L5RN-dJzKHY=");
+  background-size: cover;
+  background-position: center;
+  filter: blur(5px);
+  z-index: -1;
+}
+.black_box {
+  width: 750px;
+  min-height: 450px;
+  border-radius: 25px;
+  background-color: white;
+  background-image: linear-gradient(to top, #111, #444);
+  color: white;
+  padding: 40px;
+  margin: 40px auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  font-family: 'Ubuntu', sans-serif;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+.form-group textarea {
+  width: 100%;
+  height: 120px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  background: #222;
+  color: #fff;
+  font-size: 14px;
+  font-family: monospace;
+  box-sizing: border-box;
+  resize: vertical;
+}
+.form-group input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px dashed #666;
+  background: #222;
+  color: #ccc;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.divider {
+  text-align: center;
+  margin: 15px 0;
+  font-weight: bold;
+  color: #888;
+}
+.predict-btn {
+  width: 100%;
+  padding: 14px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 10px;
+}
+.predict-btn:hover {
+  background-color: #1d4ed8;
+}
+.result-display {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #60a5fa;
+}
+</style>
+</head>
+<body>
+
+<div class="background">
+  <header>
+    <h1 style="text-align: center; font-family: 'Oswald', sans-serif; font-weight: bold; color: whitesmoke; margin-top: 80px; font-size: 60px">
+      Black Player Elo Predictor
+    </h1>
+  </header>
+
+  <div class="black_box">
+    <h2 style="text-align: center; font-size: 32px; margin-bottom: 25px;">
+      Black Elo Prediction
+    </h2>
+
+    <div class="form-group">
+      <label for="notation">Option 1: Paste Game Notation / PGN</label>
+      <textarea id="notation" placeholder="e.g. 1. e4 e5 2. Nf3 Nc6 3. Bb5 a6..."></textarea>
+    </div>
+
+    <div class="divider">— OR —</div>
+
+    <div class="form-group">
+      <label for="game_file">Option 2: Upload Text File (.txt)</label>
+      <input type="file" id="game_file" accept=".txt">
+    </div>
+
+    <button class="predict-btn" onclick="getPrediction()">Predict Black Elo</button>
+
+    <div class="result-display" id="result"></div>
+  </div>
+</div>
+
+<script>
+// Dynamic Navbar Construction
+const navBar = document.createElement('header');
+Object.assign(navBar.style, {
+  position: 'fixed',
+  top: '0',
+  left: '0',
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '12px 40px',
+  backgroundColor: 'rgba(15, 15, 15, 0.85)',
+  backdropFilter: 'blur(12px)',
+  webkitBackdropFilter: 'blur(12px)',
+  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
+  zIndex: '9999',
+  boxSizing: 'border-box'
+});
+
+const logo = document.createElement('a');
+logo.innerText = '♟ EloPredict';
+logo.href = 'index.html';
+Object.assign(logo.style, {
+  color: '#ffffff',
+  textDecoration: 'none',
+  fontFamily: "'Oswald', sans-serif",
+  fontSize: '22px',
+  fontWeight: 'bold',
+  letterSpacing: '1px'
+});
+
+const navGroup = document.createElement('div');
+Object.assign(navGroup.style, { display: 'flex', alignItems: 'center', gap: '20px' });
+
+const homeBtn = document.createElement('a');
+homeBtn.innerText = 'Home';
+homeBtn.href = 'index.html';
+Object.assign(homeBtn.style, {
+  color: 'rgba(255, 255, 255, 0.8)',
+  textDecoration: 'none',
+  fontFamily: "'Ubuntu', sans-serif",
+  fontSize: '15px',
+  fontWeight: '700',
+  padding: '8px 12px'
+});
+
+const dropdownContainer = document.createElement('div');
+Object.assign(dropdownContainer.style, { position: 'relative', display: 'inline-block' });
+
+const dropdownTrigger = document.createElement('button');
+dropdownTrigger.innerText = 'Other Pages ▾';
+Object.assign(dropdownTrigger.style, {
+  color: '#ffffff',
+  backgroundColor: '#2563eb',
+  border: 'none',
+  fontFamily: "'Ubuntu', sans-serif",
+  fontSize: '14px',
+  fontWeight: '700',
+  padding: '8px 18px',
+  borderRadius: '20px',
+  cursor: 'pointer'
+});
+
+const dropdownMenu = document.createElement('div');
+Object.assign(dropdownMenu.style, {
+  display: 'none',
+  position: 'absolute',
+  right: '0',
+  top: '100%',
+  marginTop: '8px',
+  backgroundColor: 'rgba(25, 25, 25, 0.95)',
+  minWidth: '220px',
+  borderRadius: '12px',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  overflow: 'hidden',
+  zIndex: '10000'
+});
+
+const blackPlayerLink = document.createElement('a');
+blackPlayerLink.innerText = 'Black Player Elo Prediction';
+blackPlayerLink.href = 'page2.html';
+
+const whitePlayerLink = document.createElement('a');
+whitePlayerLink.innerText = 'White Player Elo Prediction';
+whitePlayerLink.href = 'UI.html';
+
+const itemStyle = {
+  color: '#ffffff',
+  padding: '12px 16px',
+  textDecoration: 'none',
+  display: 'block',
+  fontFamily: "'Ubuntu', sans-serif",
+  fontSize: '13px',
+  fontWeight: 'bold'
+};
+
+Object.assign(blackPlayerLink.style, itemStyle);
+Object.assign(whitePlayerLink.style, itemStyle);
+
+dropdownMenu.appendChild(blackPlayerLink);
+dropdownMenu.appendChild(whitePlayerLink);
+dropdownContainer.appendChild(dropdownTrigger);
+dropdownContainer.appendChild(dropdownMenu);
+
+dropdownTrigger.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const isOpen = dropdownMenu.style.display === 'block';
+  dropdownMenu.style.display = isOpen ? 'none' : 'block';
+});
+
+document.addEventListener('click', (e) => {
+  if (!dropdownContainer.contains(e.target)) {
+    dropdownMenu.style.display = 'none';
+  }
+});
+
+navGroup.appendChild(homeBtn);
+navGroup.appendChild(dropdownContainer);
+navBar.appendChild(logo);
+navBar.appendChild(navGroup);
+document.body.insertBefore(navBar, document.body.firstChild);
+
+// Fetch prediction request
+async function getPrediction() {
+  const resultDiv = document.getElementById('result');
+  const notationText = document.getElementById('notation').value.trim();
+  const fileInput = document.getElementById('game_file');
+  const file = fileInput.files[0];
+
+  if (!notationText && !file) {
+    resultDiv.innerText = "Please paste notation or upload a .txt file!";
+    resultDiv.style.color = "#f87171";
+    return;
+  }
+
+  resultDiv.innerText = "Analyzing notation & calculating Elo...";
+  resultDiv.style.color = "#60a5fa";
+
+  try {
+    let response;
+
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      response = await fetch('http://localhost:5000/predict-black-elo', {
+        method: 'POST',
+        body: formData
+      });
+    } else {
+      response = await fetch('http://localhost:5000/predict-black-elo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notation: notationText })
+      });
+    }
+
+    const data = await response.json();
+
+    if (data.status === 'success') {
+      resultDiv.innerText = `Predicted Black Elo: ${data.predicted_elo}`;
+    } else {
+      resultDiv.innerText = `Error: ${data.message || 'Prediction failed.'}`;
+      resultDiv.style.color = "#f87171";
+    }
+  } catch (err) {
+    console.error("Error connecting to server:", err);
+    resultDiv.innerText = "Error connecting to Python backend server.";
+    resultDiv.style.color = "#f87171";
+  }
+}
+</script>
+</body>
+</html>

@@ -156,7 +156,7 @@ Object.assign(navBar.style, {
 
 const logo = document.createElement('a');
 logo.innerText = '♟ EloPredict';
-logo.href = 'index.html';
+logo.href = 'main.html';
 Object.assign(logo.style, {
   color: '#ffffff',
   textDecoration: 'none',
@@ -171,7 +171,7 @@ Object.assign(navGroup.style, { display: 'flex', alignItems: 'center', gap: '20p
 
 const homeBtn = document.createElement('a');
 homeBtn.innerText = 'Home';
-homeBtn.href = 'index.html';
+homeBtn.href = 'main.html';
 Object.assign(homeBtn.style, {
   color: 'rgba(255, 255, 255, 0.8)',
   textDecoration: 'none',
@@ -270,42 +270,7 @@ async function getPrediction() {
     return;
   }
 
-  resultDiv.innerText = "Analyzing notation & calculating Elo...";
-  resultDiv.style.color = "#60a5fa";
-
-  try {
-    let response;
-
-    if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      response = await fetch('http://localhost:5000/predict-black-elo', {
-        method: 'POST',
-        body: formData
-      });
-    } else {
-      response = await fetch('http://localhost:5000/predict-black-elo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ notation: notationText })
-      });
-    }
-
-    const data = await response.json();
-
-    if (data.status === 'success') {
-      resultDiv.innerText = `Predicted Black Elo: ${data.predicted_elo}`;
-    } else {
-      resultDiv.innerText = `Error: ${data.message || 'Prediction failed.'}`;
-      resultDiv.style.color = "#f87171";
-    }
-  } catch (err) {
-    console.error("Error connecting to server:", err);
-    resultDiv.innerText = "Error connecting to Python backend server.";
-    resultDiv.style.color = "#f87171";
-  }
 }
 </script>
 </body>
-</html>
+</html> 

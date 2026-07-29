@@ -1,9 +1,8 @@
 # **ELO PREDICT**
 
-# What is Elo Predict?
+# What is ELO Predict?
 
-Elo Predict is a website that predicts the elo of a chess game.
-Chess ELO Predictor is a web application that predicts a player's ELO 
+ELO Predict is a website that predicts the ELO of a player based on a single game.
 ---------------------------------------------------------------
 
 http://ghermyf-crypto.github.io/elo-prediect/

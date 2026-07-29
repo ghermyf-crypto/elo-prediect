@@ -15,5 +15,8 @@
 
 ELO Predict was created because Lichess did not have a functions that could predict ELO based off of a single chess game. Because of this, we were inspired to create ELO Predict, a website that can estimate the approximate ELO of a player off of a single game.
 
+# **The Model**
+
+The model we are using is a 
 
 http://ghermyf-crypto.github.io/elo-prediect/

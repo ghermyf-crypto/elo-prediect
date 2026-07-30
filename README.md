@@ -24,8 +24,8 @@
 
 ## _Preprocessing The Data_
 
-### For the model to work, we had to preprocess a lot of the dataset since a lot of it was either not useful or not in the correct form. The dataset was from Kaggle's Chess Game Dataset (Lichess) and had a size of 76557 rows. Because we did not want to pay for extra computing units on Colab or upgrade to Colab Pro, we had to size down the dataset to 4% of the original size. We only chose 3 columns: Moves, TotalMoves, and Result for further processing.
+###   For the model to work, we had to preprocess a lot of the dataset since a lot of it was either not useful or not in the correct form. The dataset was from Kaggle's Chess Game Dataset (Lichess) and had a size of 76557 rows. Because we did not want to pay for extra computing units on Colab or upgrade to Colab Pro, we had to size down the dataset to 4% of the original size. We only chose 3 columns: Moves, TotalMoves, and Result for further processing. Moves is then further processed into evals. Evals then gets further processed into two columns: whitediff and blackdiff, which contain the eval differences for white and black. Whitediff and blackdiff then get used to create four columns for inaccuracy and mistakes. Inaccuracy is if the difference of the evals is in a range of 0.5 to 1. Mistake is if the difference of the evals is in a range of 1 to 2.5.
 
 
-## Visit The Site Here:
+## _Visit The Site Here:_
 http://ghermyf-crypto.github.io/elo-prediect/

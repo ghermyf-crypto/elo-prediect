@@ -1,4 +1,4 @@
-
+// 1. Imports MUST be at the top level
 import { score } from "./model.js";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     backgroundColor: 'rgba(25, 25, 25, 0.95)',
     minWidth: '220px',
     borderRadius: '12px',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
+    border: '1px solid rgba(255, 255, 25, 0.1)',
     overflow: 'hidden',
     zIndex: '10000'
   });
@@ -124,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
   navBar.appendChild(logo);
   navBar.appendChild(navGroup);
 
-  // Insert navbar at the top of <body>
   document.body.insertBefore(navBar, document.body.firstChild);
 
   // --- Form & Button Handling ---
@@ -141,18 +140,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function getstuff() {
-    const move = Number(moves?.value);
-    const misses = Number(miss?.value;
-    const inacs = Number(inac?.value);
-    const Result_1 = Number(Result_1_0?.value);
-    const Result_2 = Number(Result_1_2?.value);
+    const moveCount = Number(moves?.value || 0);
+    const missCount = Number(miss?.value || 0);
+    const inacCount = Number(inac?.value || 0);
+    const result1 = Number(Result_1_0?.value || 0);
+    const result2 = Number(Result_1_2?.value || 0);
 
-    const features = [move, misses, inacs, Result_1, Result_2];
+    // Calculate blunder ratio per move for model input[5]
+    const validMoves = moveCount > 0 ? moveCount : 1;
+    const errorRate = (missCount + inacCount) / validMoves;
+
+    // Ordered feature array expected by model.js:
+    // [0]: Inaccuracies, [1]: Mistakes, [2]: Moves, [3]: Result White Win, [4]: Result Black Win, [5]: Error Rate
+    const features = [inacCount, missCount, moveCount, result1, result2, errorRate];
+
     const gameElo = Math.round(score(features));
     
-    const output_div = document.getElementById("output");
-    if (output_div) {
-      output_div.innerHTML = gameElo;
+    const outputDiv = document.getElementById("output");
+    if (outputDiv) {
+      outputDiv.textContent = gameElo;
     }
   }
 });

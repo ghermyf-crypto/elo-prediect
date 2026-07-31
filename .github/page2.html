@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Black Player Elo Predictor</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+  
+  <script type="module" src="page2script.js" defer></script>
+
+  <style>
+    .background {
+      position: relative;
+    }
+    .background::before {
+      content: "";
+      position: fixed;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      background-image: linear-gradient(rgba(128, 128, 128, 0.5), rgba(128, 128, 128, 0.5)), url("https://media.gettyimages.com/id/1428445836/photo/close-up-of-a-chessboard-focus-on-the-king-and-queen.jpg?s=2048x2048&w=gi&k=20&c=DU0Mbo42dRf_0Jyg_GLYLba6cEKKofd_L5RN-dJzKHY=");
+      background-size: cover;
+      background-position: center;
+      filter: blur(5px);
+      z-index: -1;
+    }
+    .black_box {
+      width: 750px;
+      min-height: 450px;
+      border-radius: 25px;
+      background-color: white;
+      background-image: linear-gradient(to top, #111, #444);
+      color: white;
+      padding: 40px;
+      margin: 40px auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      font-family: 'Ubuntu', sans-serif;
+      box-sizing: border-box;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #555;
+      background: #222;
+      color: #fff;
+      font-size: 14px;
+      font-family: 'Ubuntu', sans-serif;
+      box-sizing: border-box;
+    }
+    .divider {
+      text-align: center;
+      margin: 15px 0;
+      font-weight: bold;
+      color: #888;
+    }
+    .predict-btn {
+      width: 100%;
+      padding: 14px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 10px;
+    }
+    .predict-btn:hover {
+      background-color: #1d4ed8;
+    }
+    .result-display {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #60a5fa;
+    }
+    .form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  background: #222;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Ubuntu', sans-serif;
+  box-sizing: border-box;
+}
+  </style>
+</head>
+<body>
+
+<div class="background">
+  <header>
+    <h1 style="text-align: center; font-family: 'Oswald', sans-serif; font-weight: bold; color: whitesmoke; margin-top: 80px; font-size: 60px">
+      Black Player Elo Predictor
+    </h1>
+  </header>
+
+  <div class="black_box">
+    <h2 style="text-align: center; font-size: 32px; margin-bottom: 25px;">
+      Black Elo Prediction
+    </h2>
+
+    <div class="form-group">
+      <label for="miss">Input the Amount of Mistakes</label>
+      <input type="number" id="miss" placeholder="ex: 10">
+    </div>
+
+    <div class="divider">— and —</div>
+
+    <div class="form-group">
+      <label for="inac">Input the Amount of Inaccuracies</label>
+      <input type="number" id="inac" placeholder="ex: 1 or 15">
+    </div>
+
+    <div class="divider">— and —</div>
+
+    <div class="form-group">
+      <label for="moves">Input the Amount of Total Moves</label>
+      <input type="number" id="moves" placeholder="ex: 35">
+    </div>
+
+    <div class="divider">— and —</div>
+
+   <div class="form-group">
+  <label for="Result_1-0">Did White Win?</label>
+  <select id="Result_1-0">
+    <option value="1">True</option>
+    <option value="0">False</option>
+  </select>
+</div>
+
+<div class="divider">— and —</div>
+
+<div class="form-group">
+  <label for="Result_1/2-1/2">Did Black Win?</label>
+  <select id="Result_1/2-1/2">
+    <option value="1">True</option>
+    <option value="0" selected>False</option>
+  </select>
+</div>
+    <button class="predict-btn" id="result">Predict Elo</button>
+    
+
+  </div>
+</div>
+<div class="black_box">
+  <header style="text-align: center; font-size: 45px; margin-bottom: 25px; font-weight: bold;">
+    Predicted Elo</header>
+ <h1 style="text-align: center; color: #60a5fa; font-size: 100px; font-weight: 800; letter-spacing: 2px; margin: 0; text-shadow: 0 0 15px #2563eb, 0 0 30px #2563eb, 0 0 45px #60a5fa, 0 0 60px #60a5fa;">
+  <span id="output">--</span>
+</h1>
+   <span> <div class="result-display" id="output"></div> </span>
+  </h1>
+</div>
+
+
+</body>
+</html>

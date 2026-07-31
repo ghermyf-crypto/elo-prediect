@@ -1,4 +1,4 @@
-// 1. Imports MUST be at the top level outside of functions/listeners
+
 import { score } from "./model.js";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -141,11 +141,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function getstuff() {
-    const move = Number(moves?.value || 0);
-    const misses = Number(miss?.value || 0);
-    const inacs = Number(inac?.value || 0);
-    const Result_1 = Number(Result_1_0?.value || 0);
-    const Result_2 = Number(Result_1_2?.value || 0);
+    const move = Number(moves?.value);
+    const misses = Number(miss?.value;
+    const inacs = Number(inac?.value);
+    const Result_1 = Number(Result_1_0?.value);
+    const Result_2 = Number(Result_1_2?.value);
 
     const features = [move, misses, inacs, Result_1, Result_2];
     const gameElo = Math.round(score(features));

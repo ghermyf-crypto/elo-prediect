@@ -1,4 +1,4 @@
-// 1. Imports MUST be at the top level
+// Relative ES Module Import - Works natively on GitHub Pages
 import { score } from "./model.js";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -126,17 +126,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.body.insertBefore(navBar, document.body.firstChild);
 
-  // --- Form & Button Handling ---
+  // --- Form & Prediction Logic ---
   const inac = document.getElementById("inac");
   const miss = document.getElementById("miss");
   const moves = document.getElementById("moves");
   const Result_1_0 = document.getElementById("Result_1-0");
   const Result_1_2 = document.getElementById("Result_1/2-1/2");
+  const predictBtn = document.getElementById("result"); 
 
-  const button = document.getElementById("result"); 
-
-  if (button) {
-    button.addEventListener("click", getstuff);
+  if (predictBtn) {
+    predictBtn.addEventListener("click", getstuff);
   }
 
   function getstuff() {
@@ -146,19 +145,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const result1 = Number(Result_1_0?.value || 0);
     const result2 = Number(Result_1_2?.value || 0);
 
-    // Calculate blunder ratio per move for model input[5]
+    // Calculate error rate for model's input[5]
     const validMoves = moveCount > 0 ? moveCount : 1;
     const errorRate = (missCount + inacCount) / validMoves;
 
-    // Ordered feature array expected by model.js:
-    // [0]: Inaccuracies, [1]: Mistakes, [2]: Moves, [3]: Result White Win, [4]: Result Black Win, [5]: Error Rate
+    // Correct feature ordering for model.js:
+    // [0] Inaccuracies, [1] Mistakes, [2] Total Moves, [3] Result White, [4] Result Black, [5] Error Rate
     const features = [inacCount, missCount, moveCount, result1, result2, errorRate];
 
-    const gameElo = Math.round(score(features));
+    const predictedElo = Math.round(score(features));
     
-    const outputDiv = document.getElementById("output");
-    if (outputDiv) {
-      outputDiv.textContent = gameElo;
+    const outputElement = document.getElementById("output");
+    if (outputElement) {
+      outputElement.textContent = predictedElo;
     }
   }
 });

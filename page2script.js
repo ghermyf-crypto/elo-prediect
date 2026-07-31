@@ -1,4 +1,3 @@
-// Relative ES Module Import - Works natively on GitHub Pages
 import { score } from "./model.js";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -124,9 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
   navBar.appendChild(logo);
   navBar.appendChild(navGroup);
 
+  // Insert navbar at the top of <body>
   document.body.insertBefore(navBar, document.body.firstChild);
 
-  // --- Form & Prediction Logic ---
+  // --- Form & Button Handling ---
   const inac = document.getElementById("inac");
   const miss = document.getElementById("miss");
   const moves = document.getElementById("moves");
@@ -145,11 +145,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const result1 = Number(Result_1_0?.value || 0);
     const result2 = Number(Result_1_2?.value || 0);
 
-    // Calculate error rate for model's input[5]
+    // Compute error rate for model's input[5]
     const validMoves = moveCount > 0 ? moveCount : 1;
     const errorRate = (missCount + inacCount) / validMoves;
 
-    // Correct feature ordering for model.js:
+    // Feature array expected by model.js:
     // [0] Inaccuracies, [1] Mistakes, [2] Total Moves, [3] Result White, [4] Result Black, [5] Error Rate
     const features = [inacCount, missCount, moveCount, result1, result2, errorRate];
 

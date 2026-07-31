@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Feature array expected by model.js:
     // [0] Inaccuracies, [1] Mistakes, [2] Total Moves, [3] Result White, [4] Result Black, [5] Error Rate
-    const features = [inacCount, missCount, moveCount, result1, result2, errorRate];
+    const features = [missCount, inacCount, moveCount, result1, result2,];
 
     const predictedElo = Math.round(score(features));
     

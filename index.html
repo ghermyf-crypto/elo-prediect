@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> Elo Predict Home</title>
+<title>Elo Predict Home</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,204 +83,235 @@
     z-index: -1;
   }
   body {
-  height: 200vh;
-  width: 100%;
-}
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+  }
 </style>
 </head>
 <body>
-    <div class="background">
-      <header>
-        <h1 style="text-align: center; font-family: 'Oswald', sans-serif; font-weight: bold; color: #000000; margin-top: 50px; font-size:100px">
-          ♟ EloPredict
-        </h1>
-      </header>
-    </div>
+  <div class="background">
+    <header>
+      <h1 style="text-align: center; font-family: 'Oswald', sans-serif; font-weight: bold; color: #000000; margin-top: 50px; font-size:100px">
+        &#9822; EloPredict
+      </h1>
+    </header>
 
     <div class="card-container">
-      <div class="whiteELO" onclick="window.location.href='UI.html';">
+      <div class="whiteELO" id="whiteCard" role="button" tabindex="0" aria-label="Predict White Elo">
         <h1 style="font-family: 'Ubuntu', sans-serif; font-weight: bold; color: #1a1a1a; font-size: 30px">
           Predict White ELO
         </h1>
       </div>
 
-      <div class="BlackELO" onclick="window.location.href='page2.html';">
+      <div class="BlackELO" id="blackCard" role="button" tabindex="0" aria-label="Predict Black Elo">
         <h1 style="font-family: 'Ubuntu', sans-serif; font-weight: bold; color: #ffffff; font-size: 30px">
           Predict Black ELO
         </h1>
       </div>
     </div>
-<h4 style="text-align: center; font-family: 'Ubuntu', sans-serif; color: black; font-size: 15px; margin-top: 50px">
-  Disclaimer:
-  this tool is a ai and it will make mistakes and this is a expermental tool and will not work
+
+    <h4 style="text-align: center; font-family: 'Ubuntu', sans-serif; color: black; font-size: 15px; margin-top: 50px">
+      Disclaimer: this tool is an AI tool and it will make mistakes. This is an experimental tool and predictions may not be accurate.
     </h4>
-<h2 style="text-align: center; font-family: 'Oswald', sans-serif; font-weight: bold; color: black; font-size: 67px; margin-top: 500px">
-  What is ELO Predict?
-</h2>
-  
-<h3 style="text-align: center; font-family: 'Ubuntu', sans-serif; color: black; font-size: 30px; margin-top: 50px; margin-left: 20px; margin-right: 20px; font-size: 30px">
-  ELO predict is a web application that predicts the ELO of a player based on the game and color they played.
-</h3>
-<h2 style="text-align: center; font-family: 'Oswald', sans-serif; font-weight: bold; color: black; font-size: 67px; margin-top: 10px">
-  What is ELO?
-</h2>
-<h3 style="text-align: center; font-family: 'Ubuntu', sans-serif; color: black; font-size: 30px; margin-top: 15px; margin-left: 20px; margin-right: 20px; font-size: 30px">
- ELO is a numerical rating system in chess that measures a player's skill level based on their game results against other players.
+
+    <h2 style="text-align: center; font-family: 'Oswald', sans-serif; font-weight: bold; color: black; font-size: 67px; margin-top: 200px">
+      What is ELO Predict?
+    </h2>
+
+    <h3 style="text-align: center; font-family: 'Ubuntu', sans-serif; color: black; font-weight: normal; font-size: 30px; margin-top: 50px; margin-left: 20px; margin-right: 20px;">
+      ELO predict is a web application that predicts the ELO of a player based on the game and color they played.
+    </h3>
+
+    <h2 style="text-align: center; font-family: 'Oswald', sans-serif; font-weight: bold; color: black; font-size: 67px; margin-top: 10px">
+      What is ELO?
+    </h2>
+
+    <h3 style="text-align: center; font-family: 'Ubuntu', sans-serif; color: black; font-weight: normal; font-size: 30px; margin-top: 15px; margin-left: 20px; margin-right: 20px; margin-bottom: 100px;">
+      ELO is a numerical rating system in chess that measures a player's skill level based on their game results against other players.
+    </h3>
+  </div>
+
 <script>
-const navBar = document.createElement('header');
+  // --- White / Black card navigation ---
+  const whiteCard = document.getElementById('whiteCard');
+  const blackCard = document.getElementById('blackCard');
 
-Object.assign(navBar.style, {
-  position: 'fixed',
-  top: '0',
-  left: '0',
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: '12px 40px',
-  backgroundColor: 'rgba(15, 15, 15, 0.85)',
-  backdropFilter: 'blur(12px)',
-  webkitBackdropFilter: 'blur(12px)',
-  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
-  zIndex: '9999',
-  boxSizing: 'border-box'
-});
-
-const logo = document.createElement('a');
-logo.innerText = '♟ EloPredict';
-logo.href = 'index.html';
-
-Object.assign(logo.style, {
-  color: '#ffffff',
-  textDecoration: 'none',
-  fontFamily: "'Oswald', sans-serif",
-  fontSize: '22px',
-  fontWeight: 'bold',
-  letterSpacing: '1px'
-});
-
-const navGroup = document.createElement('div');
-Object.assign(navGroup.style, {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '20px'
-});
-
-const homeBtn = document.createElement('a');
-homeBtn.innerText = 'Home';
-homeBtn.href = 'index.html';
-
-Object.assign(homeBtn.style, {
-  color: 'rgba(255, 255, 255, 0.8)',
-  textDecoration: 'none',
-  fontFamily: "'Ubuntu', sans-serif",
-  fontSize: '15px',
-  fontWeight: '700',
-  padding: '8px 12px',
-  transition: 'color 0.2s ease'
-});
-
-homeBtn.addEventListener('mouseenter', () => homeBtn.style.color = '#ffffff');
-homeBtn.addEventListener('mouseleave', () => homeBtn.style.color = 'rgba(255, 255, 255, 0.8)');
-
-const dropdownContainer = document.createElement('div');
-Object.assign(dropdownContainer.style, {
-  position: 'relative',
-  display: 'inline-block'
-});
-
-const dropdownTrigger = document.createElement('button');
-dropdownTrigger.innerText = 'Other Pages ▾';
-
-Object.assign(dropdownTrigger.style, {
-  color: '#ffffff',
-  backgroundColor: '#2563eb',
-  border: 'none',
-  fontFamily: "'Ubuntu', sans-serif",
-  fontSize: '14px',
-  fontWeight: '700',
-  padding: '8px 18px',
-  borderRadius: '20px',
-  boxShadow: '0 2px 10px rgba(37, 99, 235, 0.3)',
-  cursor: 'pointer',
-  transition: 'all 0.2s ease'
-});
-
-const dropdownMenu = document.createElement('div');
-
-Object.assign(dropdownMenu.style, {
-  display: 'none',
-  position: 'absolute',
-  right: '0',
-  top: '100%',
-  marginTop: '8px',
-  backgroundColor: 'rgba(25, 25, 25, 0.95)',
-  backdropFilter: 'blur(10px)',
-  minWidth: '220px',
-  boxShadow: '0 8px 16px rgba(0,0,0,0.5)',
-  borderRadius: '12px',
-  border: '1px solid rgba(255, 255, 255, 0.1)',
-  overflow: 'hidden',
-  zIndex: '10000'
-});
-
-const blackPlayerLink = document.createElement('a');
-blackPlayerLink.innerText = 'Black Player Elo Prediction';
-blackPlayerLink.href = 'page2.html';
-
-const whitePlayerLink = document.createElement('a');
-whitePlayerLink.innerText = 'White Player Elo Prediction';
-whitePlayerLink.href = 'UI.html';
-
-const itemStyle = {
-  color: '#ffffff',
-  padding: '12px 16px',
-  textDecoration: 'none',
-  display: 'block',
-  fontFamily: "'Ubuntu', sans-serif",
-  fontSize: '13px',
-  fontWeight: 'bold',
-  transition: 'background-color 0.2s ease'
-};
-
-Object.assign(blackPlayerLink.style, itemStyle);
-Object.assign(whitePlayerLink.style, itemStyle);
-
-blackPlayerLink.addEventListener('mouseenter', () => blackPlayerLink.style.backgroundColor = 'rgba(255, 255, 255, 0.1)');
-blackPlayerLink.addEventListener('mouseleave', () => blackPlayerLink.style.backgroundColor = 'transparent');
-
-whitePlayerLink.addEventListener('mouseenter', () => whitePlayerLink.style.backgroundColor = 'rgba(255, 255, 255, 0.1)');
-whitePlayerLink.addEventListener('mouseleave', () => whitePlayerLink.style.backgroundColor = 'transparent');
-
-dropdownMenu.appendChild(blackPlayerLink);
-dropdownMenu.appendChild(whitePlayerLink);
-
-dropdownContainer.appendChild(dropdownTrigger);
-dropdownContainer.appendChild(dropdownMenu);
-
-dropdownTrigger.addEventListener('click', (event) => {
-  event.stopPropagation();
-  const isOpen = dropdownMenu.style.display === 'block';
-  dropdownMenu.style.display = isOpen ? 'none' : 'block';
-  dropdownTrigger.style.backgroundColor = isOpen ? '#2563eb' : '#1d4ed8';
-});
-
-document.addEventListener('click', (event) => {
-  if (!dropdownContainer.contains(event.target)) {
-    dropdownMenu.style.display = 'none';
-    dropdownTrigger.style.backgroundColor = '#2563eb';
+  function goToWhitePredictor() {
+    window.location.href = 'UI.html';
   }
-});
+  function goToBlackPredictor() {
+    window.location.href = 'page2.html';
+  }
 
-navGroup.appendChild(homeBtn);
-navGroup.appendChild(dropdownContainer);
+  if (whiteCard) {
+    whiteCard.addEventListener('click', goToWhitePredictor);
+    whiteCard.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') goToWhitePredictor();
+    });
+  }
+  if (blackCard) {
+    blackCard.addEventListener('click', goToBlackPredictor);
+    blackCard.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') goToBlackPredictor();
+    });
+  }
 
-navBar.appendChild(logo);
-navBar.appendChild(navGroup);
+  // --- Dynamic Navbar Construction ---
+  const navBar = document.createElement('header');
 
-document.body.insertBefore(navBar, document.body.firstChild);
-document.body.style.paddingTop = '60px';
+  Object.assign(navBar.style, {
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '12px 40px',
+    backgroundColor: 'rgba(15, 15, 15, 0.85)',
+    backdropFilter: 'blur(12px)',
+    webkitBackdropFilter: 'blur(12px)',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
+    zIndex: '9999',
+    boxSizing: 'border-box'
+  });
+
+  const logo = document.createElement('a');
+  logo.innerText = '\u265F EloPredict';
+  logo.href = 'index.html';
+
+  Object.assign(logo.style, {
+    color: '#ffffff',
+    textDecoration: 'none',
+    fontFamily: "'Oswald', sans-serif",
+    fontSize: '22px',
+    fontWeight: 'bold',
+    letterSpacing: '1px'
+  });
+
+  const navGroup = document.createElement('div');
+  Object.assign(navGroup.style, {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '20px'
+  });
+
+  const homeBtn = document.createElement('a');
+  homeBtn.innerText = 'Home';
+  homeBtn.href = 'index.html';
+
+  Object.assign(homeBtn.style, {
+    color: 'rgba(255, 255, 255, 0.8)',
+    textDecoration: 'none',
+    fontFamily: "'Ubuntu', sans-serif",
+    fontSize: '15px',
+    fontWeight: '700',
+    padding: '8px 12px',
+    transition: 'color 0.2s ease'
+  });
+
+  homeBtn.addEventListener('mouseenter', () => homeBtn.style.color = '#ffffff');
+  homeBtn.addEventListener('mouseleave', () => homeBtn.style.color = 'rgba(255, 255, 255, 0.8)');
+
+  const dropdownContainer = document.createElement('div');
+  Object.assign(dropdownContainer.style, {
+    position: 'relative',
+    display: 'inline-block'
+  });
+
+  const dropdownTrigger = document.createElement('button');
+  dropdownTrigger.innerText = 'Other Pages \u25BE';
+
+  Object.assign(dropdownTrigger.style, {
+    color: '#ffffff',
+    backgroundColor: '#2563eb',
+    border: 'none',
+    fontFamily: "'Ubuntu', sans-serif",
+    fontSize: '14px',
+    fontWeight: '700',
+    padding: '8px 18px',
+    borderRadius: '20px',
+    boxShadow: '0 2px 10px rgba(37, 99, 235, 0.3)',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease'
+  });
+
+  const dropdownMenu = document.createElement('div');
+
+  Object.assign(dropdownMenu.style, {
+    display: 'none',
+    position: 'absolute',
+    right: '0',
+    top: '100%',
+    marginTop: '8px',
+    backgroundColor: 'rgba(25, 25, 25, 0.95)',
+    backdropFilter: 'blur(10px)',
+    minWidth: '220px',
+    boxShadow: '0 8px 16px rgba(0,0,0,0.5)',
+    borderRadius: '12px',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    overflow: 'hidden',
+    zIndex: '10000'
+  });
+
+  const blackPlayerLink = document.createElement('a');
+  blackPlayerLink.innerText = 'Black Player Elo Prediction';
+  blackPlayerLink.href = 'page2.html';
+
+  const whitePlayerLink = document.createElement('a');
+  whitePlayerLink.innerText = 'White Player Elo Prediction';
+  whitePlayerLink.href = 'UI.html';
+
+  const itemStyle = {
+    color: '#ffffff',
+    padding: '12px 16px',
+    textDecoration: 'none',
+    display: 'block',
+    fontFamily: "'Ubuntu', sans-serif",
+    fontSize: '13px',
+    fontWeight: 'bold',
+    transition: 'background-color 0.2s ease'
+  };
+
+  Object.assign(blackPlayerLink.style, itemStyle);
+  Object.assign(whitePlayerLink.style, itemStyle);
+
+  blackPlayerLink.addEventListener('mouseenter', () => blackPlayerLink.style.backgroundColor = 'rgba(255, 255, 255, 0.1)');
+  blackPlayerLink.addEventListener('mouseleave', () => blackPlayerLink.style.backgroundColor = 'transparent');
+
+  whitePlayerLink.addEventListener('mouseenter', () => whitePlayerLink.style.backgroundColor = 'rgba(255, 255, 255, 0.1)');
+  whitePlayerLink.addEventListener('mouseleave', () => whitePlayerLink.style.backgroundColor = 'transparent');
+
+  dropdownMenu.appendChild(blackPlayerLink);
+  dropdownMenu.appendChild(whitePlayerLink);
+
+  dropdownContainer.appendChild(dropdownTrigger);
+  dropdownContainer.appendChild(dropdownMenu);
+
+  dropdownTrigger.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const isOpen = dropdownMenu.style.display === 'block';
+    dropdownMenu.style.display = isOpen ? 'none' : 'block';
+    dropdownTrigger.style.backgroundColor = isOpen ? '#2563eb' : '#1d4ed8';
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!dropdownContainer.contains(event.target)) {
+      dropdownMenu.style.display = 'none';
+      dropdownTrigger.style.backgroundColor = '#2563eb';
+    }
+  });
+
+  navGroup.appendChild(homeBtn);
+  navGroup.appendChild(dropdownContainer);
+
+  navBar.appendChild(logo);
+  navBar.appendChild(navGroup);
+
+  document.body.insertBefore(navBar, document.body.firstChild);
+  document.body.style.paddingTop = '60px';
 </script>
 </body>
 </html>
